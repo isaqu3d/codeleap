@@ -1,9 +1,13 @@
+import { Routes, Route, Navigate } from 'react-router-dom'
+
 function App() {
   return (
-    <>
-      <h1 className="text-3xl">Hello, Vite + React!</h1>
-    </>
-  );
+    <Routes>
+      <Route path="/login" element={<div>Login</div>} />
+      <Route path="/" element={<div>Main</div>} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  )
 }
 
-export default App;
+export default App
