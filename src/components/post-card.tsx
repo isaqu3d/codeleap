@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { FiEdit2, FiTrash2 } from "react-icons/fi";
+import { FiEdit2, FiHeart, FiTrash2 } from "react-icons/fi";
+import { usePostLike } from "../hooks/use-likes";
 import type { Post } from "../types";
 
 interface PostCardProps {
@@ -19,6 +21,13 @@ export default function PostCard({
   const timeAgo = formatDistanceToNow(new Date(post.created_datetime), {
     addSuffix: true,
   });
+  const { liked, count, toggle } = usePostLike(post.id, currentUsername);
+  const [animKey, setAnimKey] = useState(0);
+
+  function handleLike() {
+    toggle();
+    setAnimKey((k) => k + 1);
+  }
 
   return (
     <div className="bg-white rounded-2xl border border-[#999999] overflow-hidden mb-6">
@@ -34,6 +43,7 @@ export default function PostCard({
             >
               <FiTrash2 size={20} />
             </button>
+
             <button
               onClick={() => onEdit(post)}
               className="text-white hover:opacity-70 transition-opacity"
@@ -51,6 +61,21 @@ export default function PostCard({
           <span className="text-[#777777] text-sm">{timeAgo}</span>
         </div>
         <p className="text-black text-base">{post.content}</p>
+
+        <div className="flex justify-end mt-3">
+          <button
+            onClick={handleLike}
+            className="flex items-center gap-1.5 text-sm text-[#777777] hover:text-red-400 transition-colors cursor-pointer"
+            aria-label={liked ? "Unlike post" : "Like post"}
+          >
+            <FiHeart
+              key={animKey}
+              size={18}
+              className={liked ? "fill-red-400 text-red-400 animate-like-pop" : ""}
+            />
+            <span>{count > 0 ? `${count} ` : ""}{liked ? "Liked" : "Like"}</span>
+          </button>
+        </div>
       </div>
     </div>
   );
