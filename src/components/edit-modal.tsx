@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUpdatePost } from "../hooks/use-posts";
 import type { Post } from "../types";
 
@@ -11,6 +11,14 @@ export default function EditModal({ post, onClose }: EditModalProps) {
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
   const { mutate, isPending } = useUpdatePost();
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape" && !isPending) onClose();
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isPending, onClose]);
 
   function handleSave() {
     if (!title.trim() || !content.trim()) return;
@@ -26,7 +34,10 @@ export default function EditModal({ post, onClose }: EditModalProps) {
   const isDisabled = !title.trim() || !content.trim() || isPending;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in">
+    <div
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in"
+      onClick={(e) => { if (e.target === e.currentTarget && !isPending) onClose(); }}
+    >
       <div className="bg-white rounded-2xl w-full max-w-[660px] overflow-hidden animate-modal-in">
         <div className="px-6 pt-5">
           <h2 className="text-[22px] font-bold text-black">Edit item</h2>

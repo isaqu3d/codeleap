@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useDeletePost } from "../hooks/use-posts";
 import type { Post } from "../types";
 
@@ -9,12 +10,23 @@ interface DeleteModalProps {
 export default function DeleteModal({ post, onClose }: DeleteModalProps) {
   const { mutate, isPending } = useDeletePost();
 
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape" && !isPending) onClose();
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isPending, onClose]);
+
   function handleDelete() {
     mutate(post.id, { onSuccess: onClose });
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in">
+    <div
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in"
+      onClick={(e) => { if (e.target === e.currentTarget && !isPending) onClose(); }}
+    >
       <div className="bg-white rounded-2xl w-full max-w-[660px] p-6 animate-modal-in">
         <h2 className="text-[22px] font-bold text-black mb-6">
           Are you sure you want to delete this item?
