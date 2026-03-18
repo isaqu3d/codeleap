@@ -1,6 +1,7 @@
 import { cn } from "../lib/cn";
 
 const sizeVariants = {
+  xs: "size-4",
   sm: "size-6",
   md: "size-8",
 } as const;
