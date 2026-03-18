@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const STORAGE_KEY = 'codeleap_username'
+export const STORAGE_KEY = 'codeleap_username'
 
 export function useUsername() {
   const [username, setUsernameState] = useState<string>(
