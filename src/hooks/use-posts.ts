@@ -1,4 +1,5 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import { fetchPosts, createPost, updatePost, deletePost } from '../api/posts'
 import type { CreatePostPayload, UpdatePostPayload } from '../types'
 
@@ -19,6 +20,7 @@ export function useCreatePost() {
   return useMutation({
     mutationFn: (payload: CreatePostPayload) => createPost(payload),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: POSTS_KEY }),
+    onError: () => toast.error('Failed to create post. Please try again.'),
   })
 }
 
@@ -29,6 +31,7 @@ export function useUpdatePost() {
     mutationFn: ({ id, payload }: { id: number; payload: UpdatePostPayload }) =>
       updatePost(id, payload),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: POSTS_KEY }),
+    onError: () => toast.error('Failed to update post. Please try again.'),
   })
 }
 
@@ -38,5 +41,6 @@ export function useDeletePost() {
   return useMutation({
     mutationFn: (id: number) => deletePost(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: POSTS_KEY }),
+    onError: () => toast.error('Failed to delete post. Please try again.'),
   })
 }
