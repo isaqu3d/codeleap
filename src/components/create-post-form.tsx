@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useCreatePost } from "../hooks/use-posts";
+import Spinner from "./spinner";
 
 interface CreatePostFormProps {
   username: string;
@@ -60,8 +61,9 @@ export default function CreatePostForm({ username }: CreatePostFormProps) {
           <button
             onClick={handleCreate}
             disabled={isDisabled}
-            className="bg-[#7695EC] text-white font-bold text-base px-7 h-8 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#5a7de0] transition-colors cursor-pointer"
+            className="bg-[#7695EC] text-white font-bold text-base px-7 h-8 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#5a7de0] transition-colors cursor-pointer flex items-center gap-2"
           >
+            {isPending && <Spinner size="xs" />}
             Create
           </button>
         </div>
