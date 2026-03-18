@@ -19,7 +19,10 @@ export function useCreatePost() {
 
   return useMutation({
     mutationFn: (payload: CreatePostPayload) => createPost(payload),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: POSTS_KEY }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: POSTS_KEY })
+      toast.success('Post created!')
+    },
     onError: () => toast.error('Failed to create post. Please try again.'),
   })
 }
@@ -30,7 +33,10 @@ export function useUpdatePost() {
   return useMutation({
     mutationFn: ({ id, payload }: { id: number; payload: UpdatePostPayload }) =>
       updatePost(id, payload),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: POSTS_KEY }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: POSTS_KEY })
+      toast.success('Post updated!')
+    },
     onError: () => toast.error('Failed to update post. Please try again.'),
   })
 }
@@ -40,7 +46,10 @@ export function useDeletePost() {
 
   return useMutation({
     mutationFn: (id: number) => deletePost(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: POSTS_KEY }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: POSTS_KEY })
+      toast.success('Post deleted!')
+    },
     onError: () => toast.error('Failed to delete post. Please try again.'),
   })
 }
