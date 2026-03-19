@@ -64,18 +64,18 @@ export default function EditModal({ post, onClose }: EditModalProps) {
             />
           </div>
 
-          <div className="flex justify-end gap-4">
+          <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
             <button
               onClick={onClose}
               disabled={isPending}
-              className="border border-black text-black font-bold px-9 h-8 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 cursor-pointer"
+              className="border border-black text-black font-bold px-9 h-10 sm:h-8 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 cursor-pointer w-full sm:w-auto"
             >
               Cancel
             </button>
             <button
               onClick={handleSave}
               disabled={isDisabled}
-              className="bg-[#47b960] text-white font-bold px-9 h-8 rounded-lg hover:bg-[#3da652] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="bg-[#47b960] text-white font-bold px-9 h-10 sm:h-8 rounded-lg hover:bg-[#3da652] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer w-full sm:w-auto"
             >
               Save
             </button>

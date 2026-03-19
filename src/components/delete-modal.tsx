@@ -32,18 +32,18 @@ export default function DeleteModal({ post, onClose }: DeleteModalProps) {
           Are you sure you want to delete this item?
         </h2>
 
-        <div className="flex justify-end gap-4">
+        <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
           <button
             onClick={onClose}
             disabled={isPending}
-            className="border border-[#999999] text-black font-bold px-9 py-2 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 cursor-pointer"
+            className="border border-[#999999] text-black font-bold px-9 py-2 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 cursor-pointer w-full sm:w-auto"
           >
             Cancel
           </button>
           <button
             onClick={handleDelete}
             disabled={isPending}
-            className="bg-[#FF5151] text-white font-bold px-9 py-2 rounded-lg hover:bg-[#e04444] transition-colors disabled:opacity-50 cursor-pointer"
+            className="bg-[#FF5151] text-white font-bold px-9 py-2 rounded-lg hover:bg-[#e04444] transition-colors disabled:opacity-50 cursor-pointer w-full sm:w-auto"
           >
             Delete
           </button>

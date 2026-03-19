@@ -65,7 +65,7 @@ export default function MainPage() {
       <div className="max-w-[800px] mx-auto min-h-screen bg-white">
         <Header />
 
-        <main className="px-6 py-6 flex flex-col gap-6">
+        <main className="px-3 py-4 sm:px-6 sm:py-6 flex flex-col gap-4 sm:gap-6">
           <CreatePostForm username={username} />
 
           <PostFilters

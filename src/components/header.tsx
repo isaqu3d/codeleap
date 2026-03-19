@@ -12,10 +12,14 @@ export default function Header() {
   }
 
   return (
-    <header className="bg-[#7695EC] h-20 flex items-center justify-between px-6 sticky top-0 z-10">
-      <h1 className="text-white text-[22px] font-bold">CodeLeap Network</h1>
-      <div className="flex items-center gap-4">
-        <span className="text-white text-sm">@{username}</span>
+    <header className="bg-[#7695EC] h-16 sm:h-20 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-10 gap-4">
+      <h1 className="text-white text-lg sm:text-[22px] font-bold truncate">
+        CodeLeap Network
+      </h1>
+      <div className="flex items-center gap-3 flex-shrink-0">
+        <span className="text-white text-sm max-w-[100px] sm:max-w-none truncate">
+          @{username}
+        </span>
         <button
           onClick={handleLogout}
           className="text-white text-sm font-bold hover:text-red-400 transition-colors cursor-pointer"

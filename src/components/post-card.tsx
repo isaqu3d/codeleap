@@ -31,11 +31,11 @@ export default function PostCard({
 
   return (
     <div className="bg-white rounded-2xl border border-[#999999] overflow-hidden mb-6">
-      <div className="bg-[#7695EC] px-6 py-5 flex items-center justify-between">
-        <span className="text-white font-bold text-[22px]">{post.title}</span>
+      <div className="bg-[#7695EC] px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between gap-3">
+        <span className="text-white font-bold text-lg sm:text-[22px] break-words min-w-0 flex-1">{post.title}</span>
 
         {isOwner && (
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-shrink-0">
             <button
               onClick={() => onDelete(post)}
               className="text-white hover:opacity-70 transition-opacity"
@@ -55,7 +55,7 @@ export default function PostCard({
         )}
       </div>
 
-      <div className="px-6 py-5">
+      <div className="px-4 sm:px-6 py-4 sm:py-5">
         <div className="flex items-center justify-between mb-3">
           <span className="font-bold text-[#777777]">@{post.username}</span>
           <span className="text-[#777777] text-sm">{timeAgo}</span>
