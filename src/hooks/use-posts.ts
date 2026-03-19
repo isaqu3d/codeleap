@@ -1,9 +1,11 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { fetchPosts, createPost, updatePost, deletePost } from '../api/posts'
-import type { CreatePostPayload, UpdatePostPayload } from '../types'
+import type { CreatePostPayload, PaginatedResponse, Post, UpdatePostPayload } from '../types'
 
 const POSTS_KEY = ['posts']
+
+type PostsCache = InfiniteData<PaginatedResponse<Post>, string | undefined>
 
 export function usePosts() {
   return useInfiniteQuery({
@@ -19,11 +21,37 @@ export function useCreatePost() {
 
   return useMutation({
     mutationFn: (payload: CreatePostPayload) => createPost(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: POSTS_KEY })
-      toast.success('Post created!')
+    async onMutate(payload) {
+      await queryClient.cancelQueries({ queryKey: POSTS_KEY })
+      const previous = queryClient.getQueryData<PostsCache>(POSTS_KEY)
+
+      const tempPost: Post = {
+        id: Date.now(),
+        username: payload.username,
+        created_datetime: new Date().toISOString(),
+        title: payload.title,
+        content: payload.content,
+      }
+
+      queryClient.setQueryData<PostsCache>(POSTS_KEY, (old) => {
+        if (!old || old.pages.length === 0) return old
+        return {
+          ...old,
+          pages: [
+            { ...old.pages[0], results: [tempPost, ...old.pages[0].results] },
+            ...old.pages.slice(1),
+          ],
+        }
+      })
+
+      return { previous }
     },
-    onError: () => toast.error('Failed to create post. Please try again.'),
+    onError: (_err, _variables, context) => {
+      queryClient.setQueryData(POSTS_KEY, context?.previous)
+      toast.error('Failed to create post. Please try again.')
+    },
+    onSuccess: () => toast.success('Post created!'),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: POSTS_KEY }),
   })
 }
 
@@ -33,11 +61,29 @@ export function useUpdatePost() {
   return useMutation({
     mutationFn: ({ id, payload }: { id: number; payload: UpdatePostPayload }) =>
       updatePost(id, payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: POSTS_KEY })
-      toast.success('Post updated!')
+    async onMutate({ id, payload }) {
+      await queryClient.cancelQueries({ queryKey: POSTS_KEY })
+      const previous = queryClient.getQueryData<PostsCache>(POSTS_KEY)
+
+      queryClient.setQueryData<PostsCache>(POSTS_KEY, (old) => {
+        if (!old) return old
+        return {
+          ...old,
+          pages: old.pages.map((page) => ({
+            ...page,
+            results: page.results.map((p) => (p.id === id ? { ...p, ...payload } : p)),
+          })),
+        }
+      })
+
+      return { previous }
     },
-    onError: () => toast.error('Failed to update post. Please try again.'),
+    onError: (_err, _variables, context) => {
+      queryClient.setQueryData(POSTS_KEY, context?.previous)
+      toast.error('Failed to update post. Please try again.')
+    },
+    onSuccess: () => toast.success('Post updated!'),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: POSTS_KEY }),
   })
 }
 
@@ -46,10 +92,28 @@ export function useDeletePost() {
 
   return useMutation({
     mutationFn: (id: number) => deletePost(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: POSTS_KEY })
-      toast.success('Post deleted!')
+    async onMutate(id) {
+      await queryClient.cancelQueries({ queryKey: POSTS_KEY })
+      const previous = queryClient.getQueryData<PostsCache>(POSTS_KEY)
+
+      queryClient.setQueryData<PostsCache>(POSTS_KEY, (old) => {
+        if (!old) return old
+        return {
+          ...old,
+          pages: old.pages.map((page) => ({
+            ...page,
+            results: page.results.filter((p) => p.id !== id),
+          })),
+        }
+      })
+
+      return { previous }
     },
-    onError: () => toast.error('Failed to delete post. Please try again.'),
+    onError: (_err, _variables, context) => {
+      queryClient.setQueryData(POSTS_KEY, context?.previous)
+      toast.error('Failed to delete post. Please try again.')
+    },
+    onSuccess: () => toast.success('Post deleted!'),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: POSTS_KEY }),
   })
 }
