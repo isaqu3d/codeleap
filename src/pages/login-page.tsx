@@ -45,7 +45,7 @@ export default function LoginPage() {
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={handleKeyDown}
             autoFocus
-            className="w-full border border-[#CCCCCC] rounded-lg px-3 py-2 text-sm placeholder-[#CCCCCC] outline-none focus:border-[#7695EC] transition-colors"
+            className="w-full border border-[#CCCCCC] rounded-lg px-3 py-2 text-base placeholder-[#CCCCCC] outline-none focus:border-[#7695EC] transition-colors"
           />
 
           <div className="flex justify-end mt-6">

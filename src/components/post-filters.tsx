@@ -25,13 +25,13 @@ export default function PostFilters({
           placeholder="Search by title or username..."
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full border border-[#CCCCCC] rounded-lg pl-9 pr-3 h-9 text-sm placeholder-[#CCCCCC] outline-none focus:border-[#7695EC] transition-colors"
+          className="w-full border border-[#CCCCCC] rounded-lg pl-9 pr-3 h-9 text-base placeholder-[#CCCCCC] outline-none focus:border-[#7695EC] transition-colors"
         />
       </div>
       <select
         value={sortOrder}
         onChange={(e) => onSortChange(e.target.value as "newest" | "oldest")}
-        className="border border-[#CCCCCC] rounded-lg px-3 h-9 text-sm text-[#777777] outline-none focus:border-[#7695EC] transition-colors cursor-pointer w-full sm:w-auto"
+        className="border border-[#CCCCCC] rounded-lg px-3 h-9 text-base text-[#777777] outline-none focus:border-[#7695EC] transition-colors cursor-pointer w-full sm:w-auto"
       >
         <option value="newest">Newest first</option>
         <option value="oldest">Oldest first</option>

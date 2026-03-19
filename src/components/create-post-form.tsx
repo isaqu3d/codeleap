@@ -42,7 +42,7 @@ export default function CreatePostForm({ username }: CreatePostFormProps) {
             placeholder="Hello world"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="border border-[#777777] rounded-lg px-3 h-8 text-sm placeholder-[#CCCCCC] outline-none focus:border-[#7695EC] transition-colors"
+            className="border border-[#777777] rounded-lg px-3 h-8 text-base placeholder-[#CCCCCC] outline-none focus:border-[#7695EC] transition-colors"
           />
         </div>
 
@@ -53,7 +53,7 @@ export default function CreatePostForm({ username }: CreatePostFormProps) {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={4}
-            className="border border-[#777777] rounded-lg px-3 py-2 text-sm placeholder-[#CCCCCC] outline-none focus:border-[#7695EC] transition-colors resize-none"
+            className="border border-[#777777] rounded-lg px-3 py-2 text-base placeholder-[#CCCCCC] outline-none focus:border-[#7695EC] transition-colors resize-none"
           />
         </div>
 
